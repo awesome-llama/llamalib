@@ -1,0 +1,18 @@
+﻿.vscode/*
+!.vscode/launch.json
+
+__pycache__
+
+# For development
+test/
+test*.py
+project.json
+*.sb3
+
+# MS Excel
+~$ops.xlsx
+
+# Rhinoceros 3D
+*.3dmbak
+*.3dm.rhl
+*.dmp

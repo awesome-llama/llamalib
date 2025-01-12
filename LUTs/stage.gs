@@ -1,0 +1,2 @@
+costumes "costumes/blank.svg";
+
