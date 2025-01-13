@@ -1,6 +1,6 @@
 # For more info see: https://scratch.mit.edu/projects/1101066205/
 
-costumes "costumes/icon.svg";
+costumes "costumes/icon_cmd.svg" as "icon";
 
 list command; # internal storage of commands
 
@@ -13,7 +13,7 @@ proc _read_command_until_semicolon {
     until not ("/" in cmd_string[i]) {
         i += 1;
         if i > length(cmd_string) {
-            return 0;
+            stop_this_script;
         }
     }
     until i > length(cmd_string) {
@@ -30,7 +30,7 @@ proc _read_command_until_semicolon {
             } elif inside_quotes == 0 and cmd_string[i] == ";" {
                 add substring to command;
                 substring = "";
-                return 0; # end of command, break so it can be run
+                stop_this_script; # end of command, break so it can be run
             } else {
                 substring &= cmd_string[i];
             }
@@ -46,7 +46,7 @@ proc evaluate_command {
     # evaluate the command stored in the command list
     command_name = command[1];
     if command_name[1] == "#" {
-        return 0;
+        stop_this_script;
     }
     delete command[1];
     

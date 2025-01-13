@@ -1,6 +1,6 @@
 # For more info see: https://scratch.mit.edu/projects/114633511/
 
-costumes "costumes/icon.svg";
+costumes "costumes/icon_io.svg" as "icon";
 
 list CSKV_data;
 
