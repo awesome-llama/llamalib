@@ -112,3 +112,22 @@ onkey "/" {
     broadcast "open commands";
 }
 
+
+on "update cmd messages" {
+    update_cmd_messages;
+}
+
+proc update_cmd_messages {
+    # update only, not render
+    msg_i = 1;
+    repeat length(messages) / 2 {
+        messages[msg_i+1] = messages[msg_i+1] - 0.033; # replace this with delta time
+        if messages[msg_i+1] < 0 {
+            # delete message
+            delete messages[msg_i];
+            delete messages[msg_i];
+        } else {
+            msg_i += 2;
+        }
+    }
+}
