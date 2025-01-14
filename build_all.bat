@@ -7,5 +7,6 @@ goboscript build -i "CSKV"
 goboscript build -i "LUTs"
 goboscript build -i "PTE"
 goboscript build -i "template"
+goboscript build -i "2Dgfx"
 
 pause
