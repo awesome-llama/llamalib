@@ -1,11 +1,9 @@
-# various graphics and geometry utils
+# Render various shapes
 
 %include std/math
 
-# Return the length of a vector
-%define VEC_LEN(VX,VY) sqrt(VX*VX + VY*VY)
+costumes "costumes/blank.svg";
 
-costumes "costumes/icon.svg";
 
 # Draw a line segment using 2 points
 proc draw_line x1, y1, x2, y2 {
@@ -118,11 +116,11 @@ proc draw_rectangle_corner_wh x, y, width, height {
 
 # Draw a circle
 proc draw_circle x, y, radius, steps {
-    angle = 0;
-    goto $x + $radius, $y;
+    angle = 90;
+    goto $x, $y + $radius;
     pen_down;
     repeat $steps {
-        angle += 360/$steps;
+        angle += -360/$steps;
         goto $x + $radius * cos(angle), $y + $radius * sin(angle);
     }
     pen_up;
@@ -130,20 +128,35 @@ proc draw_circle x, y, radius, steps {
 
 # Draw a broken circle
 proc draw_circle_broken x, y, radius, spacing {
-    arc_len = 57.295779513*$spacing/$radius;
-    # TODO make the broken line align better
-    angle = 0;
-    repeat 360/(2*arc_len) {
-        goto $x + $radius * cos(angle), $y + $radius * sin(angle);
-        pen_down;
-        angle += arc_len;
-        goto $x + $radius * cos(angle), $y + $radius * sin(angle);
-        pen_up;
-        angle += arc_len;
+    steps = round(6.28318530718/($spacing/$radius));
+    if steps > 1 {
+        angle = 90;
+        repeat steps {
+            goto $x + $radius * cos(angle), $y + $radius * sin(angle);
+            pen_down;
+            angle += -180/steps;
+            goto $x + $radius * cos(angle), $y + $radius * sin(angle);
+            pen_up;
+            angle += -180/steps;
+        }
     }
 }
 
-# Draw an arc
+# Draw a dotted circle
+proc draw_circle_dotted x, y, radius, spacing {
+    steps = round(6.28318530718/($spacing/$radius));
+    if steps > 1 {
+        angle = 90;
+        repeat steps {
+            goto $x + $radius * cos(angle), $y + $radius * sin(angle);
+            pen_down;
+            pen_up;
+            angle += -360/steps;
+        }
+    }
+}
+
+# Draw an arc using angles from +x ccw
 proc draw_arc x, y, radius, start_angle, stop_angle, steps {
     angle = $start_angle;
     goto $x + $radius * cos(angle), $y + $radius * sin(angle);
@@ -165,6 +178,19 @@ proc draw_bezier_quadratic x1, y1, x2, y2, x3, y3, steps {
         goto (1-t)*((1-t)*$x1 + t*$x2) + t*((1-t)*$x2 + (t*$x3)), (1-t)*((1-t)*$y1 + t*$y2) + t*((1-t)*$y2 + (t*$y3));
     }
     goto $x3, $y3; # this is here to guarantee the line reaches end regardless of step count
+    pen_up;
+}
+
+# draw a cubic bezier curve from 4 points
+proc draw_bezier_cubic x1, y1, x2, y2, x3, y3, x4, y4, steps {
+    goto $x1, $y1;
+    pen_down;
+    t = 0;
+    repeat $steps-1 {
+        t += 1/$steps;
+        goto (1-t)*((1-t)*((1-t) * $x1 + 3*t*$x2) + 3*$x3*t*t) + $x4*t*t*t, (1-t)*((1-t)*((1-t) * $y1 + 3*t*$y2) + 3*$y3*t*t) + $y4*t*t*t;
+    }
+    goto $x4, $y4; # this is here to guarantee the line reaches end regardless of step count
     pen_up;
 }
 
@@ -192,6 +218,18 @@ proc draw_arrow x, y, vx, vy {
     pen_up;
 }
 
+# Draw a number of evenly-spaced lines radiating from a single point.
+proc draw_asterisk x, y, radius, rays {
+    angle = 90;
+    repeat $rays {
+        goto $x, $y;
+        pen_down;
+        goto $x + $radius * cos(angle), $y + $radius * sin(angle);
+        pen_up;
+        angle += -360/$rays;
+    }
+}
+
 
 ################################################################
 
@@ -215,12 +253,16 @@ onflag {
 
     draw_circle 140, -40, 50, 16;
     draw_circle_broken 140, -40, 60, 12;
+    draw_circle_dotted 140, -40, 70, 12;
 
     draw_arc 140, -40, 90, 135, 90, 16;
     
     draw_bezier_quadratic 110, 110, 120, 10, 140, 150, 16;
+    draw_bezier_cubic 100, 100, 130, 20, 110, 150, 70, 20, 16;
+
     draw_dot 150, 100;
     draw_arrow -100, -20, 100, -20;
+    draw_asterisk 0, 160, 10, 8;
 
     #forever {
         #erase_all;
