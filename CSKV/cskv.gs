@@ -5,7 +5,7 @@ costumes "costumes/icon_io.svg" as "icon";
 list CSKV_data;
 
 # Get the value immediately after a CSKV key. Uses the CSKV_data list.
-%define CSKV_get(key) CSKV_data[1 + (("!" & key) in CSKV_data)] 
+%define CSKV_get(key) CSKV_data[1 + (("!" & (key)) in CSKV_data)] 
 
 proc unpack_CSKV str {
     # version allowing escape char \
