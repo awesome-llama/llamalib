@@ -1,18 +1,21 @@
-costumes "costumes/icon_main.svg" as "icon";
-
-%include std/math
-
 # More info on the project structure: https://scratch.mit.edu/projects/749493736/
 
-onflag {
+%include common/common.gs
+
+costumes "costumes/icon_main.svg" as "icon";
+hide;
+
+
+on "initalise" {
     hide;
     switch_costume "icon";
     dev = 0;
     if username() == "awesome-llama" or username() == "awesome-llama-test" {
         dev = 1;
     }
-    broadcast "reset shared vars";
-    broadcast "! initalise";
+}
+
+on "start main loop" {
     last_time = days_since_2000();
     forever {
         # delta time
@@ -34,16 +37,29 @@ on "get inputs" {
 }
 
 
-onkey "up arrow" {
-    # zoom in
-    cam_scale *= 2;
-    if cam_scale > 16 {cam_scale = 16;}
+onkey "up arrow" { broadcast "zoom in"; }
+on "zoom in" {
+    change_zoom 1;
 }
 
-onkey "down arrow" {
-    # zoom out
-    cam_scale /= 2;
-    if cam_scale < 0.015625 {cam_scale = 0.015625;}
+
+onkey "down arrow" { broadcast "zoom out"; }
+on "zoom out" {
+    change_zoom -1;
+}
+
+
+# 2^(1/increment)
+%define ZOOM_INCREMENT sqrt(2)
+proc change_zoom increment {
+    cam_scale = POW(ZOOM_INCREMENT, round(LOG(cam_scale, ZOOM_INCREMENT) + $increment));
+    
+    # limits
+    if (cam_scale < 0.125) {
+        cam_scale = 0.125;
+    } elif (cam_scale > 32) {
+        cam_scale = 32;
+    }
 }
 
 

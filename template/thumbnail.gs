@@ -1,6 +1,8 @@
 costumes "costumes/blank.svg" as "thumbnail";
+hide;
 
-onflag {
+
+on "initalise" {
     hide;
     goto 0, 0;
 }

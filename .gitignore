@@ -4,13 +4,27 @@
 __pycache__
 
 # For development
-test/
 test*.py
 project.json
 *.sb3
 
+# folders for organisation
+test/
+discard/
+holding/
+
+
+# Blender backups
+*.blend1
+*.blend2
+*.blend3
+*.blend4
+*.blend5
+
+
 # MS Excel
-~$ops.xlsx
+~$*.xlsx
+
 
 # Rhinoceros 3D
 *.3dmbak
