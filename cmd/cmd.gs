@@ -58,8 +58,13 @@ proc evaluate_command {
 
         } elif command_name == "help" {
             print "help", 4;
+
+        } elif command_name == "broadcast" {
+            broadcast command[1];
+
         } else {
             print "Unrecognised command: `" & command_name & "`", 4;
+
         }
     } else {
         print "dev=1 required", 4;
