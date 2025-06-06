@@ -37,11 +37,11 @@ func SDF_line_segment(x1, y1, x2, y2, px, py) {
 
 
 # Parabola. https://iquilezles.org/articles/distfunctions2d/
+%define SQM(VX,VY) (((VX)*(VX))+((VY)*(VY)))
+%define SIGN(VALUE) ((VALUE) / abs(VALUE))
+%define CBRT(X) antiln(ln(abs(X))/3)
+%define ATAN2(Y,X) (atan((Y)/((X)+0)) + 180*((X)<0))
 func SDF_parabola(k, px, py) {
-    %define SQM(VX,VY) (((VX)*(VX))+((VY)*(VY)))
-    %define SIGN(VALUE) ((VALUE) / abs(VALUE))
-    %define CBRT(X) antiln(ln(abs(X))/3)
-    %define ATAN2(Y,X) (atan((Y)/((X)+0)) + 180*((X)<0))
 
     ik = 1/$k;
     p = ik*($py - 0.5*ik) / 3;
@@ -63,21 +63,19 @@ func SDF_parabola(k, px, py) {
     } else {
         return sqrt(SQM(abs($px)-x, r));
     }
-    
-    %undef SQM
-    %undef SIGN
-    %undef CBRT
-    %undef ATAN2
 }
+%undef SQM
+%undef SIGN
+%undef CBRT
+%undef ATAN2
 
 
 
 # Bezier curve, quadratic. https://iquilezles.org/articles/distfunctions2d/
+%define SQM(VX,VY) (((VX)*(VX))+((VY)*(VY)))
+%define CBRT(X) antiln(ln(abs(X))/3)
+%define SIGN(VALUE) ((VALUE) / abs(VALUE))
 func SDF_bezier_quadratic(ax, ay, bx, by, cx, cy, px, py) {
-    %define SQM(VX,VY) (((VX)*(VX))+((VY)*(VY)))
-    %define CBRT(X) antiln(ln(abs(X))/3)
-    %define SIGN(VALUE) ((VALUE) / abs(VALUE))
-
     a_x = $bx-$ax;
     a_y = $by-$ay;
     b_x = ($ax - 2*$bx) + $cx;
@@ -96,7 +94,7 @@ func SDF_bezier_quadratic(ax, ay, bx, by, cx, cy, px, py) {
     q = (kx * (2*kx*kx - 3*ky)) + (kk * (d_x*a_x + d_y*a_y));
     h = q*q + 4*p*p*p;
     
-    if ( h > 0) {
+    if h > 0 {
         v = acos(q/(p*sqrt(abs(p))*2)) / 3;
         t_x = (2 * cos(v) * sqrt(abs(p))) - kx;
         t_y = ((sin(v) * -1.732050808) - cos(v)) * sqrt(abs(p)) - kx;
@@ -127,7 +125,7 @@ func SDF_bezier_quadratic(ax, ay, bx, by, cx, cy, px, py) {
         x_y = (-sqrt(h)-q)/2;
 
         t = ((SIGN(x_x) * CBRT(x_x)) + (SIGN(x_y) * CBRT(x_y))) - kx;
-        # t is actually a useful secondary return value, that's it's here 
+        # t is actually a useful secondary return value, that's why it's here 
         if t > 1 {
             t = 1;
         } elif t < 0 {
@@ -135,11 +133,10 @@ func SDF_bezier_quadratic(ax, ay, bx, by, cx, cy, px, py) {
         }
         return sqrt(SQM(d_x+((c_x+(b_x*t))*t), d_y+((c_y+(b_y*t))*t)));
     }
-    
-    %undef SQM
-    %undef CBRT
-    %undef SIGN
 }
+%undef SQM
+%undef CBRT
+%undef SIGN
 
 
 ################################################################
@@ -171,6 +168,7 @@ proc preview_field {
         change_y 1;
     }
 }
+
 
 onflag {
     hide;

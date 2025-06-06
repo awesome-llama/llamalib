@@ -7,25 +7,37 @@
 #         Math - misc          #
 ################################
 
-# 1 if positive, -1 if negative
+# Get the sign of a number. 1 if positive, -1 if negative. NaN if 0.
 %define SIGN(VAL) ((VAL)/abs(VAL))
 
 # Power
 %define POW(BASE,EXP) antiln(ln(BASE)*(EXP))
 
-# Root
+# nth root
 %define ROOT(BASE,R) antiln(ln(BASE)/(R))
 
 # Logarithm of any base
 %define LOG(VAL,BASE) (ln(VAL)/ln(BASE))
 
-# Clamp above 0
+
+
+# Smallest of 2 numbers
+%define MIN(A,B) ((A)+(((A)>(B))*((B)-(A))))
+
+# Largest of 2 numbers
+%define MAX(A,B) ((A)+(((A)<(B))*((B)-(A))))
+
+
+
+# Clamp, keep numbers above 0
 %define POSITIVE_CLAMP(VAL) (((VAL)>0)*(VAL))
 
 # Clamp between 0 and 1
 %define CLAMP_0_1(VAL) (1 - (((VAL)<1) * (1-POSITIVE_CLAMP(VAL))) )
 
-# Average of 2 numbers
+
+
+# Arithmetic mean ("average") of 2 numbers
 %define MEAN(A,B) (((A)+(B))/2)
 
 # Linear interpolation ("lerp"). Remap a normalised value `t` (between 0 and 1) to a different interval.
@@ -43,13 +55,13 @@
 #     Math - coordinates       #
 ################################
 
-# Convert 2D coordinates into index, assumes ints that do not wrap
+# Convert 2D coordinates into list index, assumes ints that do not wrap
 %define INDEX_FROM_2D_NOWRAP_INTS(X,Y,SIZE_X) (1 + (((SIZE_X)*(Y)) + (X)))
 
-# Convert 2D coordinates into index, assumes ints, wrapped
+# Convert 2D coordinates into list index, assumes ints, wrapped
 %define INDEX_FROM_2D_INTS(X,Y,SIZE_X,SIZE_Y) (1 + (((SIZE_X)*((Y)%(SIZE_Y))) + ((X)%(SIZE_X))))
 
-# Convert 2D coordinates into index, floored and wrapped
+# Convert 2D coordinates into list index, floored and wrapped
 %define INDEX_FROM_2D(X,Y,SIZE_X,SIZE_Y) (1 + (((SIZE_X)*(floor(Y)%(SIZE_Y))) + (floor(X)%(SIZE_X))))
 
 
@@ -79,7 +91,7 @@
 #         Math - color         #
 ################################
 
-# floored RGB channels to integer
+# Floored RGB channels to integer. Does not clamp.
 %define COMBINE_RGB_CHANNELS(R,G,B) (65536*floor(255*(R)) + 256*floor(255*(G)) + floor(255*(B)))
 
 
