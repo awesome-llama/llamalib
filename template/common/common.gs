@@ -50,6 +50,10 @@
 %define REMAP(IN0,IN1,OUT0,OUT1,T) (LERP(OUT0,OUT1,UNLERP(IN0,IN1,T)))
 
 
+# Approximately equal to
+%define APPROX(A,B,TOLERANCE) (abs((B)-(A)) < (TOLERANCE))
+
+
 
 ################################
 #     Math - coordinates       #
