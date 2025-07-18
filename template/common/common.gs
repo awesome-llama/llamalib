@@ -81,7 +81,7 @@
 %define VEC3_LEN(VX,VY,VZ) sqrt((VX)*(VX) + (VY)*(VY) + (VZ)*(VZ))
 
 # Vector angle in the XY plane. Note the addition of 0, used to fix a negative zero bug.
-%define ATAN2(Y,X) (atan((Y)/((X)+0)) + 180*((X)<0))
+%define ATAN2(Y,X) (atan((Y)/((X)+"0")) + 180*((X)<0))
 
 # Dot product 2D
 %define DOT_PRODUCT_2D(X1,Y1,X2,Y2) ((X1)*(X2) + (Y1)*(Y2))
