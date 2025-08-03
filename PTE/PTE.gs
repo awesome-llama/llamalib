@@ -6,7 +6,7 @@ costumes
 "costumes/blank.svg" as "",
 "costumes/blank.svg" as "@ascii/";
 
-list PTE_font = file ```5x7 printable ASCII.txt```;
+list PTE_font "5x7 printable ASCII.txt";
 
 %define current_costume_char_index costume_number() + 5
 

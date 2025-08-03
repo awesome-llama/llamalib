@@ -2,6 +2,11 @@
 
 costumes "costumes/xy-grid-plain.png";
 
+var cam_x;
+var cam_y;
+var cam_scale;
+
+
 
 on "initalise" {
     # reset all global vars used across the project

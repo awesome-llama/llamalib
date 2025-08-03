@@ -2,11 +2,11 @@
 
 cd %~dp0
 
-goboscript build -i "cmd"
-goboscript build -i "CSKV"
-goboscript build -i "geo2D"
-goboscript build -i "LUTs"
-goboscript build -i "PTE"
-goboscript build -i "template"
+goboscript build "cmd"
+goboscript build "CSKV"
+goboscript build "geo2D"
+goboscript build "LUTs"
+goboscript build "PTE"
+goboscript build "template"
 
 pause
