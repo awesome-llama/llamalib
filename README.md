@@ -9,4 +9,3 @@ This repository is primarily for my own use. It may morph into a different form 
 
 Assuming you have goboscript, use `goboscript build` to generate the `.sb3` file for inspection. If you are in the root path of this repository, use `goboscript build -i FOLDER_NAME` to target a specific folder. Each folder is a standalone project.
 
-If including these in your own goboscript projects, copy the relevant files or scripts over. As of writing, goboscript only uses relative file paths in `%include`.
